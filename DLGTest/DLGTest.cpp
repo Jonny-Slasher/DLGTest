@@ -4,8 +4,9 @@
 
 HWND hEdit1;
 HWND hEdit2;
+HWND hEdit3;
 HWND hList;
-WCHAR boofer[100];
+WCHAR boofer[300];
 BOOL CALLBACK DlgProc1(HWND, UINT, WPARAM, LPARAM);
 BOOL CALLBACK DlgProc2(HWND, UINT, WPARAM, LPARAM);
 HINSTANCE hInst;
@@ -24,7 +25,7 @@ BOOL CALLBACK DlgProc1(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
     case WM_INITDIALOG: 
         hInst = GetModuleHandle(NULL);
-        hEdit1 = GetDlgItem(hwnd, IDC_EDITONE);
+       
         hList = GetDlgItem(hwnd,IDC_LIST1);
      
         break;
@@ -47,11 +48,15 @@ BOOL CALLBACK DlgProc1(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 }
 BOOL CALLBACK DlgProc2(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     WCHAR first[100];
+    WCHAR second[100];
+    WCHAR third[100];
     switch (uMsg) 
     {
     case WM_INITDIALOG: 
+        hEdit1 = GetDlgItem(hwnd, IDC_EDIT1);
         hEdit2 = GetDlgItem(hwnd, IDC_EDIT2);
-        SetFocus(hEdit2);
+        hEdit3 = GetDlgItem(hwnd, IDC_EDIT3);
+        SetFocus(hEdit1);
       
 
         break;
@@ -60,8 +65,10 @@ BOOL CALLBACK DlgProc2(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
         {
         case IDOK: {
              // hList = GetDlgItem(hwnd, IDC_LIST1);
-              SendMessage(hEdit2, WM_GETTEXT, (WPARAM)255, (LPARAM)first);
-              wsprintf(boofer, L"%s", first);
+              SendMessage(hEdit1, WM_GETTEXT, (WPARAM)255, (LPARAM)first);
+              SendMessage(hEdit2, WM_GETTEXT, (WPARAM)255, (LPARAM)second);
+              SendMessage(hEdit3, WM_GETTEXT, (WPARAM)255, (LPARAM)third);
+              wsprintf(boofer, L"%s %s %s", first, second, third);
               SendMessage(hList, LB_ADDSTRING, 0, (LPARAM)boofer);
              // SendMessage(hEdit1, WM_SETTEXT, 0, (LPARAM)boofer);
               EndDialog(hwnd, 0);
