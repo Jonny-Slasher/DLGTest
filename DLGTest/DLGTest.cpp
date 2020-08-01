@@ -4,6 +4,7 @@
 
 HWND hEdit1;
 HWND hEdit2;
+HWND hList;
 WCHAR boofer[100];
 BOOL CALLBACK DlgProc1(HWND, UINT, WPARAM, LPARAM);
 BOOL CALLBACK DlgProc2(HWND, UINT, WPARAM, LPARAM);
@@ -12,7 +13,7 @@ HINSTANCE hInst;
 
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nCmdShow)
 {
-    DialogBoxParam(hInstance, MAKEINTRESOURCE(IDD_DIALOG1), 0, (DlgProc1), 0);
+    DialogBoxParam(hInstance, MAKEINTRESOURCE(IDD_DIALOG1), 0, DLGPROC(DlgProc1), 0);
     return 0;
 }
 
@@ -24,14 +25,15 @@ BOOL CALLBACK DlgProc1(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     case WM_INITDIALOG: 
         hInst = GetModuleHandle(NULL);
         hEdit1 = GetDlgItem(hwnd, IDC_EDITONE);
-      // 
+        hList = GetDlgItem(hwnd,IDC_LIST1);
+     
         break;
     case WM_COMMAND:
         switch (LOWORD(wParam)) 
     {
     case ID_MODAL: {
      
-        DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_DIALOG2), hwnd, DlgProc2, 0);
+        DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_DIALOG2), hwnd, DLGPROC(DlgProc2), 0);
     }
                  break;
     }
@@ -57,9 +59,11 @@ BOOL CALLBACK DlgProc2(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
         switch (LOWORD(wParam))
         {
         case IDOK: {
+             // hList = GetDlgItem(hwnd, IDC_LIST1);
               SendMessage(hEdit2, WM_GETTEXT, (WPARAM)255, (LPARAM)first);
               wsprintf(boofer, L"%s", first);
-              SendMessage(hEdit1, WM_SETTEXT, 0, (LPARAM)boofer);
+              SendMessage(hList, LB_ADDSTRING, 0, (LPARAM)boofer);
+             // SendMessage(hEdit1, WM_SETTEXT, 0, (LPARAM)boofer);
               EndDialog(hwnd, 0);
            
         }
